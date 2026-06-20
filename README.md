@@ -2,7 +2,7 @@
 AI and Machine Learning in Sustainability  
 ===========================================
 ## Part 5 code explanation :   
-This code snippet represents a classic machine learning workflow in Python (likely using the `scikit-learn` library). It sets up two different predictive models, trains them on a dataset, makes predictions, and then compares their accuracy.
+This part ( part5-1) represents a classic machine learning workflow in Python ( using the `scikit-learn` library). It sets up two different predictive models, trains them on a dataset, makes predictions, and then compares their accuracy.
 
 Here is a step-by-step breakdown of what each section does:
 
