@@ -147,3 +147,54 @@ Because you are no longer predicting numbers, you can't use metrics like MAE or 
 * **`classification_report(...)`**: Accuracy alone can be misleading, so this built-in `scikit-learn` function prints a highly detailed matrix. It breaks down the model's performance for *each specific bucket* (A, B, and C) showing you metrics like:
 * **Precision:** When the model guessed a building was an "A", how often was it actually an "A"?
 * **Recall:** Out of all the true "A" buildings in the real world, how many did the model successfully find?
+
+* This snippet introduces a very powerful visualization tool for classification models: the **Confusion Matrix**. While the `classification_report` from the previous step gives you the math, the confusion matrix gives you a visual map of exactly *where* your model is making mistakes.
+
+Here is a breakdown of the code and how to interpret the resulting image.
+
+### **Part 1: The Code Breakdown**
+
+This code uses a combination of `scikit-learn` to do the math and a new library called `seaborn` (imported as `sns`) to make it look nice.
+
+* **`cm = confusion_matrix(...)`**: This calculates the raw grid of numbers. It compares the true answers (`yte`) against the model's guesses (`y_pred_clf`).
+* **`plt.figure(figsize=(6, 5))`**: Sets up a 6x5 inch canvas for the chart.
+* **`sns.heatmap(...)`**: Seaborn specializes in making statistical charts look beautiful with minimal code. A "heatmap" uses color intensity to represent numbers.
+* `cm`: The raw data grid we just calculated.
+* `annot=True`: Tells Seaborn to actually draw the numbers inside the colored boxes (otherwise, it would just be blank colored squares).
+* `fmt="d"`: Ensures the numbers are formatted as regular whole numbers (digits) rather than scientific notation.
+* `cmap="Blues"`: Sets the color palette. Higher numbers get darker shades of blue; lower numbers get lighter shades.
+* `xticklabels` and `yticklabels`: Applies the names of your categories ("A (efficient)", etc.) to the X and Y axes instead of just 0, 1, and 2.
+
+
+
+---
+
+### **Part 2: Explaining the Output Image**
+
+The resulting image is essentially a grid showing how the true labels align with the predicted labels. Here is how to read the story it tells:
+
+#### **The Axes**
+
+* **Y-Axis (True label):** This is what the building *actually* is in the real world.
+* **X-Axis (Predicted label):** This is what the model *guessed* the building was.
+
+#### **The Diagonal (The Successes)**
+
+Look at the dark blue boxes running diagonally from top-left to bottom-right. These represent **correct predictions**, where the True label perfectly matches the Predicted label.
+
+* **Top-Left (51):** 51 buildings were truly "A" and the model correctly guessed "A".
+* **Middle (44):** 44 buildings were truly "B" and the model correctly guessed "B".
+* **Bottom-Right (49):** 49 buildings were truly "C" and the model correctly guessed "C".
+
+#### **The Off-Diagonal (The Mistakes)**
+
+Any number outside that main diagonal represents a mistake—hence why it's called a *confusion* matrix.
+
+* **Look at the row for True Label "B (medium)":**
+* The model got 44 of them right.
+* However, it looked at **5** true "B" buildings and incorrectly guessed they were "A" (efficient).
+* It looked at **2** true "B" buildings and incorrectly guessed they were "C" (poor).
+
+
+* **The Best Insight:** Notice the top-right and bottom-left corners are exactly **0**. This tells you that the model *never* made an extreme error. It never looked at a highly efficient "A" building and guessed it was a poor "C" building, and vice versa. Even when the model is wrong, its mistakes are reasonable (only confusing neighboring categories).
+* 
