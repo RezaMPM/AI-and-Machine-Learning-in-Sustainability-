@@ -37,3 +37,40 @@ This custom function (`def report(...)`) is built to calculate and neatly print 
 ### **The Execution**
 
 The final three lines simply print a header row and then call the `report` function twice—once for the Linear Regression predictions (`y_pred_lin`) and once for the Random Forest predictions (`y_pred_rf`)—allowing you to easily see which model performed better on the test data.
+
+ Now that the Random Forest model has made its predictions, this code uses the `matplotlib.pyplot` library (abbreviated here as `plt`) to create a scatter plot. This allows you to visually inspect how good the model's guesses actually are, rather than just relying on the numbers we calculated earlier.
+
+Here is a step-by-step breakdown of how the graph is built:
+
+### **Setting the Stage**
+
+* **`plt.figure(figsize=(6, 6))`**: This creates the blank canvas for the chart and sets its size to a perfect square (6 inches wide by 6 inches tall).
+
+### **Plotting the Data**
+
+* **`plt.scatter(...)`**: This places the actual data points on the graph.
+* `y_test` is the X-axis (the true, actual values).
+* `y_pred_rf` is the Y-axis (what the Random Forest *guessed* the values would be).
+* `alpha=0.6` makes the dots 40% transparent. As the comment notes, this is a great trick for scatter plots because if hundreds of dots pile up in the exact same spot, the transparency makes that cluster look darker, showing you the density of the data.
+* `color` and `label` simply set the dot color to a specific shade of blue and name the data for the legend.
+
+
+
+### **Drawing the "Perfect" Line**
+
+* **`lims = [y_test.min(), y_test.max()]`**: This finds the absolute lowest and highest actual heating loads in your test data to set the boundaries for a reference line.
+* **`plt.plot(lims, lims, "r--", ...)`**: This is the most important conceptual part of the chart. It draws a line from the bottom-left corner to the top-right corner.
+* Because the X and Y coordinates for this line are exactly the same (`lims, lims`), it represents **perfect accuracy** (where Actual = Predicted).
+* `"r--"` is shorthand telling matplotlib to make it a **r**ed, --dashed line.
+
+
+
+### **Adding the Finishing Touches**
+
+* **`plt.xlabel(...)` and `plt.ylabel(...)**`: These label the X and Y axes so anyone looking at the chart knows exactly what they are looking at.
+* **`plt.title(...)`**: Puts the title at the top of the chart.
+* **`plt.legend()`**: Takes the `label="..."` arguments you defined earlier and puts them in a neat little box in the corner so viewers know what the blue dots and the red dashed line represent.
+* **`plt.show()`**: Finally, this command tells Python to take all the instructions above and actually render the image on your screen.
+
+**How to read the resulting chart:**
+If the Random Forest model is highly accurate, almost all the blue dots will be tightly hugging that red dashed line. If a blue dot is far above the red line, the model over-predicted the heating load for that specific building. If it's far below, the model under-predicted it.
