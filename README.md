@@ -74,3 +74,34 @@ Here is a step-by-step breakdown of how the graph is built:
 
 **How to read the resulting chart:**
 If the Random Forest model is highly accurate, almost all the blue dots will be tightly hugging that red dashed line. If a blue dot is far above the red line, the model over-predicted the heating load for that specific building. If it's far below, the model under-predicted it.
+
+This part of the code is all about looking under the hood of the Random Forest model to understand **why** it's making its predictions.
+
+While the previous code just asked the model for answers, this part asks the model: *"Which pieces of information were the most important to you when you were deciding the heating load?"* This is known as **Feature Importance**.
+
+Here is a step-by-step breakdown of how the code extracts and displays this information:
+
+### **1. Calculating and Organizing the Scores**
+
+* **`rf.feature_importances_`**: This is a built-in attribute of the Random Forest model. While training, the model kept track of how much each feature (like wall area, roof area, overall height, etc.) helped it reduce errors. This outputs a list of raw scores.
+* **`pd.Series(...)`**: This takes those raw scores and turns them into a Pandas Series, which is essentially a list with custom labels.
+* **`index=feature_names`**: This provides those labels. It matches the raw importance scores to the actual names of your building features.
+* **`.sort_values()`**: This sorts the list from the least important feature to the most important. Sorting it this way makes the resulting chart much easier to read.
+
+### **2. Building the Horizontal Bar Chart**
+
+* **`plt.figure(figsize=(8, 5))`**: Creates a new canvas for the chart, 8 inches wide and 5 inches tall.
+* **`importance.plot(kind="barh", color="#2F5496")`**: This is the core command. It tells Pandas to plot the data we just organized as a **h**orizontal **bar** chart (`barh`).
+* **`plt.title(...)` and `plt.xlabel(...)**`: Adds text to the top and the bottom of the chart so viewers understand the context of the data.
+* **`plt.tight_layout()`**: This is a very helpful Matplotlib command. It automatically adjusts the margins of the chart so that long feature names on the Y-axis don't get cut off at the edge of the image.
+* **`plt.show()`**: Renders the image on your screen.
+
+### **3. Printing the Top 3 Features in Text**
+
+The chart is great for visuals, but this last section pulls out the most critical data and prints it as plain text.
+
+* **`importance.sort_values(ascending=False).head(3)`**: This takes the importance data, sorts it in reverse (largest to smallest), and uses `.head(3)` to chop off everything except the top 3 items.
+* **`.items()`**: This splits those top 3 items into pairs: the feature name (`feat`) and its score (`imp`).
+* **`for feat, imp in ...:`**: This loop goes through those top 3 pairs one by one to print them.
+* **`feat.replace('_', ' ')`**: This is a text cleanup trick. If your data feature was named `Wall_Area`, this changes it to `Wall Area` so it looks cleaner in the final output.
+* **`imp:.1%`**: This formatting command tells Python to take the raw decimal score (e.g., `0.5432`) and print it as a percentage with exactly 1 decimal place (`54.3%`).
