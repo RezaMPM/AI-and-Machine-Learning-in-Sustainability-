@@ -1,5 +1,33 @@
 # AI-and-Machine-Learning-in-Sustainability-
-AI and Machine Learning in Sustainability  
+AI and Machine Learning in Sustainability
+This is an educational machine learning script that demonstrates supervised learning on building energy efficiency data.
+
+Key Sections:
+Setup & Libraries – Imports pandas, numpy, matplotlib, seaborn, and scikit-learn tools for data science.
+
+Data Loading – Attempts to fetch the UCI Energy Efficiency dataset; falls back to synthetic data if offline. Contains 8 building features (compactness, surface area, wall/roof area, height, orientation, glazing) predicting heating load.
+
+Exploratory Data Analysis – Creates visualizations:
+
+Histogram of heating load distribution
+Correlation heatmap showing relationships between features
+Regression Task – Splits data (80/20 train/test), scales features, then trains two models:
+
+Linear Regression
+Random Forest Regressor (200 trees)
+Evaluates using MAE, RMSE, and R² scores
+Shows predicted vs actual scatter plot
+Displays feature importance ranking
+Classification Task – Converts heating load into 3 efficiency bands (A/B/C), trains a Random Forest Classifier:
+
+Reports classification accuracy
+Shows confusion matrix to identify prediction errors
+Final Summary – Prints overall lesson metrics comparing both model types.
+
+Purpose: Teaches core ML workflow: data loading → exploration → modeling → evaluation → interpretation.
+
+
+
 ===========================================
 ## Part 5 code explanation :   
 This part ( part5-1) represents a classic machine learning workflow in Python ( using the `scikit-learn` library). It sets up two different predictive models, trains them on a dataset, makes predictions, and then compares their accuracy.
